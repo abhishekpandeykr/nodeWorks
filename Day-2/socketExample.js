@@ -8,6 +8,9 @@ const tcpServer = net.createServer(function (socket) {
   socket.on('end', function() {
     console.log('connection close');
   })
+  socket.on('close', function () {
+    console.log('close event fired');
+  })
   socket.on('data', function (data) {//example of the readable stream
     console.log('here is the readable stream', data);
     socket.write('server reply' + data)
@@ -17,6 +20,9 @@ const tcpServer = net.createServer(function (socket) {
 //handling each request using error handler!
   socket.on('error', function (error) {
     console.log('something went wrong here!');
+    socket.end('the socket connection is going to be cloased!')
+    //destroy close all the i/o activiry
+    socket.destroy();
   })
 })
 //to restrict he connection numbers
